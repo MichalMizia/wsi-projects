@@ -11,6 +11,7 @@ class MatPlotLibUtils:
         x_range: Tuple[float, float] = (-2, 2),
         point: Optional[float] = None,
         steps: Optional[List[np.ndarray]] = None,
+        title: Optional[str] = None,
     ) -> None:
         min_x, max_x = x_range
         x = np.arange(min_x, max_x, 0.01)
@@ -27,6 +28,9 @@ class MatPlotLibUtils:
             y_steps = np.array([func(x[0]) for x in steps])
             plt.plot(steps, y_steps, color="g", marker="o", label="Steps", markersize=2)
 
+        if title:
+            plt.title(title, fontsize=10)
+
         plt.xlabel("x")
         plt.ylabel("y")
         plt.legend()
@@ -39,6 +43,7 @@ class MatPlotLibUtils:
         y_range: tuple[float, float] = (-2, 2),
         point: Optional[np.ndarray] = None,
         steps: Optional[List[np.ndarray]] = None,
+        title: Optional[str] = None,
     ) -> None:
         min_x, max_x = x_range
         min_y, max_y = y_range
@@ -62,6 +67,9 @@ class MatPlotLibUtils:
             z_steps = np.array([func(x, y) for x, y in zip(x_steps, y_steps)])
             ax.plot(x_steps, y_steps, z_steps, color="b", marker="o", markersize=2)
 
+        if title:
+            plt.title(title, fontsize=10)
+
         ax.plot_surface(X, Y, Z)  # type: ignore
         plt.xlabel("x")
         plt.ylabel("y")
@@ -74,6 +82,7 @@ class MatPlotLibUtils:
         y_range: Tuple[float, float] = (-2, 2),
         point: Optional[np.ndarray] = None,
         steps: Optional[List[np.ndarray]] = None,
+        title: Optional[str] = None,
     ) -> None:
         min_x, max_x = x_range
         min_y, max_y = y_range
@@ -95,6 +104,9 @@ class MatPlotLibUtils:
             new_steps = np.array(steps)
             xs, ys = new_steps[:, 0], new_steps[:, 1]
             ax.plot(xs, ys, color="r", marker="o", label="Steps", markersize=2)
+
+        if title:
+            plt.title(title, fontsize=10)
 
         plt.xlabel("x")
         plt.ylabel("y")
