@@ -5,7 +5,6 @@ import numpy as np
 
 class MatPlotLibUtils:
     @staticmethod
-    @staticmethod
     def graph_2d_func(
         func: Callable[[float], float],
         x_range: Tuple[float, float] = (-2, 2),
