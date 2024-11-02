@@ -1,20 +1,24 @@
 import gmplot
 from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut
+from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
+import time
 
 
-def get_coordinates(city_name):
-    geolocator = Nominatim(user_agent="city_visualizer")
-    try:
-        location = geolocator.geocode(city_name)
-        if location:
-            return (location.latitude, location.longitude)
-        else:
-            print(f"Coordinates for {city_name} not found.")
-            return None
-    except GeocoderTimedOut:
-        print(f"Geocoding timed out for {city_name}.")
-        return None
+def get_coordinates(city_name, retries=3, backoff_factor=0.3):
+    geolocator = Nominatim(user_agent="city_visualizer", timeout=10)
+    for attempt in range(retries):
+        try:
+            location = geolocator.geocode(city_name)
+            if location:
+                return (location.latitude, location.longitude)
+            else:
+                print(f"Coordinates for {city_name} not found.")
+                return None
+        except (GeocoderTimedOut, GeocoderUnavailable) as e:
+            print(f"Geocoding error for {city_name}: {e}. Retrying...")
+            time.sleep(backoff_factor * (2**attempt))
+    print(f"Failed to get coordinates for {city_name} after {retries} retries.")
+    return None
 
 
 def visualize(cities_list):

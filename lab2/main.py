@@ -1,16 +1,14 @@
 import argparse
 import pathlib
-
 import numpy as np
 import pandas as pd
 from solution_utils import (
-    generate_solution,
     decode_solution,
-    validate_solution,
     good_sol,
 )
 from visualizer import visualize
-from genetic_solver import GeneticSolver
+from ga_roulette import GeneticSolver
+from graph_results import graph_results
 
 MINI_CITIES_NUM = 5
 
@@ -29,8 +27,8 @@ def parse_args():
         default="full",
         help="Run algorithm on full or simplified problem setup",
     )
-    parser.add_argument("--start", type=str, default="Łomża")
-    parser.add_argument("--finish", type=str, default="Częstochowa")
+    parser.add_argument("--start", type=str, default="Warszawa")
+    parser.add_argument("--finish", type=str, default="Rzeszów")
     parser.add_argument("--seed", type=int)
     parser.add_argument("--visualize", action="store_true")
     return parser.parse_args()
@@ -62,18 +60,13 @@ def main():
 
     data = load_data(args)
 
-    visualize(
-        decode_solution(
-            data,
-            good_sol,
-        )
-    )
+    # graph_results(data)
+    # visualize(decode_solution(data, good_sol))
+    solver = GeneticSolver(data, pop_size=400)
+    sol = solver.run(max_iter=200)
 
-    # solver = GeneticSolver(data)
-    # sol = solver.run()
-
-    # if args.visualize:
-    #     visualize(decode_solution(data, sol))
+    if args.visualize:
+        visualize(decode_solution(data, sol))
 
 
 if __name__ == "__main__":
