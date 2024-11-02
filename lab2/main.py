@@ -7,8 +7,11 @@ from solution_utils import (
     good_sol,
 )
 from visualizer import visualize
-from ga_roulette import GeneticSolver
 from graph_results import graph_results
+from ga_roulette import GeneticSolver
+
+# from ga_tournament import GeneticSolver
+
 
 MINI_CITIES_NUM = 5
 

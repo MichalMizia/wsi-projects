@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import solution_utils
 import numpy as np
-from ga_tournament import GeneticSolver
+from ga_roulette import GeneticSolver
 
-# from ga_roulette import GeneticSolver
+# from ga_tournament import GeneticSolver
 
 
 def graph_results(cities_matrix):
