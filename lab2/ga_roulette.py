@@ -83,7 +83,7 @@ def create_population(cities_matrix, pop_size) -> List[Member]:
 
 def roulette_selection(population: List[Member]) -> List[Member]:
     min_eval = min(memb.eval for memb in population)
-    shift = -min_eval + 1e-6  # Shift evaluations to be positive
+    shift = -min_eval + 10  # Shift to not divide by 0``
     fitnesses = [1 / (memb.eval + shift) for memb in population]
     total_fitness = np.sum(fitnesses)
     probs = fitnesses / total_fitness
