@@ -9,6 +9,7 @@ class TicTacToe:
         self.board = np.zeros((N_ROWS, N_ROWS), dtype=np.str_)
         self.player_x_turn = True
         self.player_x_started = True
+        self.last_moves = []
         self.winner = None  # winner is in ["x", "o", "t", None] t -> tie, None -> not finished yet
 
     def play_again(self):
@@ -55,8 +56,21 @@ class TicTacToe:
         else:
             self.board[tuple(logical_position)] = new_symbol = "o"
 
+        self.last_moves.append(logical_position)
         self.player_x_turn = not self.player_x_turn
         return new_symbol
+
+    def unmove(self):
+        if len(self.last_moves) == 0 or self.is_free(self.last_moves[-1]):
+            return
+
+        logical_position = self.last_moves.pop()
+        self.board[tuple(logical_position)] = ""
+        self.player_x_turn = not self.player_x_turn
+        self.winner = None
+
+    def get_player(self):
+        return "X" if self.player_x_turn else "O"
 
     def available_moves(self):
         return np.argwhere((self.board == ""))
