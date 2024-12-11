@@ -5,7 +5,9 @@ import pathlib
 import numpy as np
 
 from gui import GameGUI
+from gui3D import GameGUI3D
 from game import TicTacToe
+from game3D import TicTacToe3D
 from player import build_player
 
 
@@ -45,7 +47,12 @@ if __name__ == "__main__":
     player_x = build_player(config["x"], game)
     player_o = build_player(config["o"], game)
 
-    if config["gui"]:
+    game3D = TicTacToe3D()
+
+    if config["3D"]:
+        gui = GameGUI3D(game3D, player_x, player_o)
+        gui.mainloop()
+    elif config["gui"]:
         gui = GameGUI(game, player_x, player_o)
         gui.mainloop()
     else:
@@ -59,7 +66,7 @@ if __name__ == "__main__":
             "o_starting": {"o": 0, "x": 0, "t": 0},
         }
 
-        for i in range(100):
+        for i in range(5):
             simulate_game(game, player_x, player_o, i % 2 == 0)
             # print(game.get_winner())
             wins["x_starting" if i % 2 == 0 else "o_starting"][game.get_winner()] += 1
