@@ -12,5 +12,6 @@
   },
   "minimax": { "type": "minimax", "pruning_depth": 5 },
   "minimax_weak": { "type": "minimax", "pruning_depth": 3 },
-  "gui": false
+  "gui": false,
+  "3D": false
 }

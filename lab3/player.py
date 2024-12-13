@@ -44,6 +44,7 @@ class MinimaxComputerPlayer(Player):
         super().__init__(game)
         self.prune_depth = config["pruning_depth"]
         self.player = ""
+        self.HEURISTIC = [[3, 2, 3], [2, 4, 2], [3, 2, 3]]
 
     def eval(self, is_maximizing: bool) -> int:
         winner = self.game.get_winner()
