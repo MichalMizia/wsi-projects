@@ -38,8 +38,8 @@ class NeuralNetwork:
 
     def back_prop(self, X, y, output):
         # output is in scope [0, 1]
-        y = self.minMax_normalize(y)
         # y is normalized to be in same scope as output
+        y = self.minMax_normalize(y)
         self.final_layer_error = y - output
         self.final_layer_delta = self.final_layer_error * self._sigmoid_derivative(
             output
@@ -52,8 +52,8 @@ class NeuralNetwork:
             self.hidden_layer_output
         )
 
-        # Weight += Error * Input * derrivative
-        # error * derivative = delta
+        # delta = error * derivative
+        # Weight += Input * delta * learning_rate --> gradient descent
         self.hidden_output_weights += (
             np.dot(self.hidden_layer_output.T, self.final_layer_delta) * self.lr
         )

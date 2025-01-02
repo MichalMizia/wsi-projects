@@ -33,7 +33,8 @@ def main():
 
     predictions = nn.forward_prop(X_test)
     mse = mean_squared_error(y_test, predictions)
-    print(predictions)
+
+    # print(predictions)
     print(f"Mean Squared Error: {mse}")
 
 
