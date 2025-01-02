@@ -31,7 +31,6 @@ def main():
         lr=0.001,
     )
 
-    # print(nn.hidden_input_weights)
     nn.train(X_train, y_train, 10000)
 
     predictions = nn.forward_prop(X_test)
@@ -39,7 +38,6 @@ def main():
 
     print(f"Mean Squared Error: {mse}")
     print(predictions)
-    # print(nn.loss)
 
 
 if __name__ == "__main__":
