@@ -10,9 +10,11 @@ class NeuralNetwork:
 
         np.random.seed(1)
         self.hidden_input_weights = np.random.randn(
-            self.input_size, self.hidden_size
+            (self.input_size, self.hidden_size)
         )  # random weights from normal dostribution
-        self.hidden_output_weights = np.random.randn(self.hidden_size, self.output_size)
+        self.hidden_output_weights = np.random.randn(
+            (self.hidden_size, self.output_size)
+        )
 
     # can use sigmoid activation - if so targets (Y values) must be normalized to range (0, 1)
     # def _sigmoid(self, x):
@@ -43,11 +45,15 @@ class NeuralNetwork:
     def back_prop(self, X, y, output):
         self.final_layer_error = y - output
         self.final_layer_delta = (
-            self.final_layer_error * 1
+            self.final_layer_error
         )  # linear function derivatove is 1
 
-        self.hidden_layer_error = np.dot(self.hidden_output_weights.T, self.final_layer_delta)
-        self.hidden_layer_delta = self.hidden_error * self._relu_derivative(self.hidden_layer_output)
+        self.hidden_layer_error = np.dot(
+            self.final_layer_delta, self.hidden_output_weights.T
+        )
+        self.hidden_layer_delta = self.hidden_layer_error * self._relu_derivative(
+            self.hidden_layer_output
+        )
 
         # Weight += Error * Input * derrivative, error * derivative = delta
         self.hidden_output_weights += (
@@ -55,5 +61,9 @@ class NeuralNetwork:
         )
         self.hidden_input_weights += np.dot(X.T, self.hidden_layer_delta) * self.lr
 
-    def train(self):
-        pass
+    def train(self, X, y, iters):
+        self.loss = []
+        for _ in range(iters):
+            output = self.forward_prop(X)
+            self.back_prop(X, y, output)
+            self.loss.append(np.mean(np.square(y - output)))
