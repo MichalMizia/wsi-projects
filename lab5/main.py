@@ -13,11 +13,6 @@ def main():
     X = wine_quality.data.features
     y = wine_quality.data.targets
 
-    # print(wine_quality.variables)
-
-    # print(X.head())
-    # print(y.head())
-
     X = X.fillna(X.mean())
     y = y.fillna(y.mean())
 
@@ -37,9 +32,9 @@ def main():
     nn.train(X_train, y_train, 10000)
 
     predictions = nn.forward_prop(X_test)
-    print(predictions)
     mse = mean_squared_error(y_test, predictions)
-    # print(f"Mean Squared Error: {mse}")
+    print(predictions)
+    print(f"Mean Squared Error: {mse}")
 
 
 if __name__ == "__main__":
