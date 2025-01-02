@@ -9,7 +9,7 @@ class NeuralNetwork:
         self.output_size = output_size
         self.lr = lr
 
-        np.random.seed(1)
+        # np.random.seed(1)
         # random weights from normal dostribution
         self.hidden_input_weights = np.random.randn(self.input_size, self.hidden_size)
         self.hidden_output_weights = np.random.randn(self.hidden_size, self.output_size)
