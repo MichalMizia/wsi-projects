@@ -25,15 +25,20 @@ def main():
     X_test = scaler.transform(X_test)
 
     nn = NeuralNetwork(
-        input_size=X_train.shape[1], hidden_size=10, output_size=1, lr=0.001
+        input_size=X_train.shape[1],
+        hidden_layers_size=[10, 6, 4],
+        output_size=1,
+        lr=0.001,
     )
-    nn.train(X_train, y_train, 1000)
+
+    # print(nn.hidden_input_weights)
+    nn.train(X_train, y_train, 10000)
 
     predictions = nn.forward_prop(X_test)
     mse = mean_squared_error(y_test, predictions)
 
     print(f"Mean Squared Error: {mse}")
-    # print(predictions)
+    print(predictions)
     # print(nn.loss)
 
 
