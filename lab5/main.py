@@ -22,21 +22,19 @@ def main():
 
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
-    X_test = scaler.fit_transform(X_test)
-
-    print(X_train.shape)
+    X_test = scaler.transform(X_test)
 
     nn = NeuralNetwork(
-        input_size=X_train.shape[1], hidden_size=10, output_size=1, lr=0.1
+        input_size=X_train.shape[1], hidden_size=10, output_size=1, lr=0.001
     )
-    nn.train(X_train, y_train, 100)
+    nn.train(X_train, y_train, 1000)
 
     predictions = nn.forward_prop(X_test)
     mse = mean_squared_error(y_test, predictions)
 
-    # print(predictions)
     print(f"Mean Squared Error: {mse}")
-    print(nn.loss)
+    # print(predictions)
+    # print(nn.loss)
 
 
 if __name__ == "__main__":

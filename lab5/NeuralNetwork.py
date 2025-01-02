@@ -14,15 +14,11 @@ class NeuralNetwork:
         self.hidden_input_weights = np.random.randn(self.input_size, self.hidden_size)
         self.hidden_output_weights = np.random.randn(self.hidden_size, self.output_size)
 
-    # can use sigmoid activation - if so targets (Y values) must be normalized to range (0, 1)
     def _sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
 
     def _sigmoid_derivative(self, x):
         return x * (1 - x)
-
-    def minMax_normalize(self, data):
-        return (data - data.min()) / (data.max() - data.min())
 
     # forward_prop with sigmoid activation
     def forward_prop(self, X):
@@ -37,9 +33,6 @@ class NeuralNetwork:
         return self.final_layer_output
 
     def back_prop(self, X, y, output):
-        # output is in scope [0, 1]
-        # y is normalized to be in same scope as output
-        y = self.minMax_normalize(y)
         self.final_layer_error = y - output
         self.final_layer_delta = self.final_layer_error * self._sigmoid_derivative(
             output
