@@ -3,19 +3,28 @@ from sklearn.metrics import mean_squared_error
 
 
 class NeuralNetwork:
-    def __init__(self, input_size, hidden_layers_size, output_size, lr):
+    def __init__(
+        self, input_size, hidden_layers_size, output_size, lr, weights_init="RDN"
+    ):
         self.input_size = input_size
         self.hidden_layers_size = hidden_layers_size
         self.output_size = output_size
         self.lr = lr
+        self.weights_init = weights_init
 
         # np.random.seed(1)
 
         # He weights initalization (randm - vlues from normal dostribution)
         # weights of input layer
         self.weights = [
-            np.random.randn(self.input_size, self.hidden_layers_size[0])
-            * np.sqrt(2 / self.input_size)
+            (
+                np.random.randn(self.input_size, self.hidden_layers_size[0])
+                * np.sqrt(2 / self.input_size)
+                if self.weights_init == "HE"
+                else np.random.uniform(
+                    -0.1, 0.1, (self.input_size, self.hidden_layers_size[0])
+                )
+            )
         ]
 
         # weights of hidden layers
@@ -25,12 +34,22 @@ class NeuralNetwork:
                     self.hidden_layers_size[i - 1], self.hidden_layers_size[i]
                 )
                 * np.sqrt(2 / self.hidden_layers_size[i - 1])
+                if self.weights_init == "HE"
+                else np.random.uniform(
+                    -0.1,
+                    0.1,
+                    (self.hidden_layers_size[i - 1], self.hidden_layers_size[i]),
+                )
             )
 
         # weights of output layers
         self.weights.append(
             np.random.randn(self.hidden_layers_size[-1], self.output_size)
             * np.sqrt(2 / self.hidden_layers_size[-1])
+            if self.weights_init == "HE"
+            else np.random.uniform(
+                -0.1, 0.1, (self.hidden_layers_size[-1], self.output_size)
+            )
         )
 
         self.biases = [np.random.randn(1, size) for size in self.hidden_layers_size]
@@ -72,41 +91,43 @@ class NeuralNetwork:
 
     # forward_prop with relu activation
     def forward_prop(self, X):
-        self.hidden_layers_inputs = [X]
+        self.layers_inputs = []
+        self.layers_outputs = [X]
         for i in range(len(self.weights) - 1):
             layer_input = (
-                np.dot(self.hidden_layers_inputs[-1], self.weights[i]) + self.biases[i]
+                np.dot(self.layers_outputs[-1], self.weights[i]) + self.biases[i]
             )
+            self.layers_inputs.append(layer_input)
             layer_output = self._activ_func(layer_input)
-            self.hidden_layers_inputs.append(layer_output)
+            self.layers_outputs.append(layer_output)
 
-        self.final_layer_output = (
-            np.dot(self.hidden_layers_inputs[-1], self.weights[-1]) + self.biases[-1]
+        final_layer_output = (
+            np.dot(self.layers_outputs[-1], self.weights[-1]) + self.biases[-1]
         )
-        # return self._activ_func(self.final_layer_output)
-        return self.final_layer_output
+        return final_layer_output
 
     def back_prop(self, X, y, output):
 
-        # dLoss / dWeights = (dLoss / dOutput) * [(dOutput / dInput) * (dInput / dWeights)] - [...] is repeated as many times as there are hidden layers
+        # dLoss / dWeights = (dLoss / dOutput) * (dOutput / dInput) * ... * (dInput / dWeights)]
         # loss is MSE - (1/N) * sum((y - output)**2)
 
         first_dLoss_dInput = self._mse_derivative(
             y, output
         ) * self._activ_func_derivative(output)
+        # dLoss_dInput = (dLoss / dOutput) * (dOutput / dInput)
         layers_dLoss_dInput = [first_dLoss_dInput]
 
         for i in range(len(self.hidden_layers_size) - 1, -1, -1):
             dLoss_dInput = np.dot(
                 layers_dLoss_dInput[-1], self.weights[i + 1].T
-            ) * self._activ_func_derivative(self.hidden_layers_inputs[i + 1])
+            ) * self._activ_func_derivative(self.layers_inputs[i])
             # self.weights[i + 1] cause' for n hidden layers there's always n+1 weight sets
             layers_dLoss_dInput.append(dLoss_dInput)
 
         layers_dLoss_dInput.reverse()
         for i in range(len(self.weights)):
             self.weights[i] -= (
-                np.dot(self.hidden_layers_inputs[i].T, layers_dLoss_dInput[i]) * self.lr
+                np.dot(self.layers_outputs[i].T, layers_dLoss_dInput[i]) * self.lr
             )
             self.biases[i] -= (
                 np.expand_dims(np.sum(layers_dLoss_dInput[i], axis=0), axis=0) * self.lr

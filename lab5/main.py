@@ -29,16 +29,16 @@ def main():
         input_size=X_train.shape[1],
         hidden_layers_size=[10, 6, 4],
         output_size=1,
-        lr=0.01,
+        lr=0.1,
+        # weights_init="HE"
     )
 
-    nn.train(X_train, y_train, 10000)
+    nn.train(X_train, y_train, 1000)
 
     predictions = nn.forward_prop(X_test)
     mse = mean_squared_error(y_test, predictions)
 
     print(f"Mean Squared Error: {mse}")
-    # print(predictions)
     print(nn.loss[:5], nn.loss[-5:])
 
 

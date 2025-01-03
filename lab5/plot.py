@@ -45,9 +45,10 @@ def main():
                 input_size=X_train.shape[1],
                 hidden_layers_size=config,
                 output_size=1,
-                lr=0.01,
+                lr=0.1,
+                weights_init="HE",
             )
-            nn.train(X_train, y_train, 10000)
+            nn.train(X_train, y_train, 1000)
             predictions = nn.forward_prop(X_test)
             mse = mean_squared_error(y_test, predictions)
             if mse > 3:
@@ -110,7 +111,7 @@ def compare_scalers():
             input_size=X_train_MINMAX.shape[1],
             hidden_layers_size=[30, 15, 7],
             output_size=1,
-            lr=0.001,
+            lr=0.01,
         )
         nn.train(X_train_MINMAX, y_train, 1000)
         predictions = nn.forward_prop(X_test_MINMAX)
@@ -171,5 +172,5 @@ def compare_scalers():
 
 
 if __name__ == "__main__":
-    main()
-    # compare_scalers()
+    # main()
+    compare_scalers()
