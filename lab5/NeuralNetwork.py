@@ -33,6 +33,9 @@ class NeuralNetwork:
             * np.sqrt(2 / self.hidden_layers_size[-1])
         )
 
+        self.biases = [np.random.randn(1, size) for size in self.hidden_layers_size]
+        self.biases.append(np.random.randn(1, self.output_size))
+
     # common activation functions - sigmoid, ReLU, tanh
     def _sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
@@ -67,17 +70,20 @@ class NeuralNetwork:
     def _mse_derivative(self, y, output):
         return 2 * (output - y) / y.size
 
+    def _output_activation(self, x):
+        return 9 * self._sigmoid(x)
+
     # forward_prop with relu activation
     def forward_prop(self, X):
         self.hidden_layers_inputs = [X]
-        for i in range(len(self.weights) - 1):
-            layer_input = np.dot(self.hidden_layers_inputs[-1], self.weights[i])
+        for i in range(len(self.weights)):
+            layer_input = (
+                np.dot(self.hidden_layers_inputs[-1], self.weights[i]) + self.biases[i]
+            )
             layer_output = self._activ_func(layer_input)
             self.hidden_layers_inputs.append(layer_output)
-        self.final_layer_output = np.dot(
-            self.hidden_layers_inputs[-1], self.weights[-1]
-        )
-        return self.final_layer_output
+
+        return self._output_activation(self.hidden_layers_inputs[-1])
 
     def back_prop(self, X, y, output):
 
@@ -100,6 +106,9 @@ class NeuralNetwork:
         for i in range(len(self.weights)):
             self.weights[i] -= (
                 np.dot(self.hidden_layers_inputs[i].T, layers_dLoss_dInput[i]) * self.lr
+            )
+            self.biases[i] -= (
+                np.expand_dims(np.sum(layers_dLoss_dInput[i], axis=0), axis=0) * self.lr
             )
 
     def train(self, X, y, iters):
