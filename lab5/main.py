@@ -1,6 +1,6 @@
 from ucimlrepo import fetch_ucirepo
 from NeuralNetwork import NeuralNetwork
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
@@ -20,7 +20,8 @@ def main():
         X, y, test_size=0.2, random_state=1
     )
 
-    scaler = StandardScaler()
+    # scaler = StandardScaler()
+    scaler = MinMaxScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
@@ -28,7 +29,7 @@ def main():
         input_size=X_train.shape[1],
         hidden_layers_size=[10, 6, 4],
         output_size=1,
-        lr=0.001,
+        lr=0.01,
     )
 
     nn.train(X_train, y_train, 10000)
@@ -37,7 +38,8 @@ def main():
     mse = mean_squared_error(y_test, predictions)
 
     print(f"Mean Squared Error: {mse}")
-    print(predictions)
+    # print(predictions)
+    print(nn.loss[:5], nn.loss[-5:])
 
 
 if __name__ == "__main__":

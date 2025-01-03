@@ -11,9 +11,12 @@ class NeuralNetwork:
 
         # np.random.seed(1)
 
-        # random weights from normal dostribution
+        # He weights initalization (randm - vlues from normal dostribution)
         # weights of input layer
-        self.weights = [np.random.randn(self.input_size, self.hidden_layers_size[0])]
+        self.weights = [
+            np.random.randn(self.input_size, self.hidden_layers_size[0])
+            * np.sqrt(2 / self.input_size)
+        ]
 
         # weights of hidden layers
         for i in range(1, len(self.hidden_layers_size)):
@@ -21,11 +24,13 @@ class NeuralNetwork:
                 np.random.randn(
                     self.hidden_layers_size[i - 1], self.hidden_layers_size[i]
                 )
+                * np.sqrt(2 / self.hidden_layers_size[i - 1])
             )
 
         # weights of output layers
         self.weights.append(
             np.random.randn(self.hidden_layers_size[-1], self.output_size)
+            * np.sqrt(2 / self.hidden_layers_size[-1])
         )
 
     # common activation functions - sigmoid, ReLU, tanh
@@ -41,13 +46,23 @@ class NeuralNetwork:
     def _ReLU_derivative(self, x):
         return np.where(x > 0, 1, 0)
 
+    def _leaky_ReLU(self, x):
+        alpha = 0.01
+        return np.where(x > 0, x, alpha * x)
+
+    def _leaky_ReLU_derivative(self, x):
+        alpha = 0.01
+        return np.where(x > 0, 1, alpha)
+
     def _activ_func(self, x):
         # return self._sigmoid(x)
         return self._ReLU(x)
+        # return self._leaky_ReLU(x)
 
     def _activ_func_derivative(self, x):
         # return self._sigmoid_derivative(x)
         return self._ReLU_derivative(x)
+        # return self._leaky_ReLU_derivative(x)
 
     def _mse_derivative(self, y, output):
         return 2 * (output - y) / y.size
@@ -92,4 +107,4 @@ class NeuralNetwork:
         for _ in range(iters):
             output = self.forward_prop(X)
             self.back_prop(X, y, output)
-            # self.loss.append(mean_squared_error(y, output))
+            self.loss.append(mean_squared_error(y, output))
