@@ -63,7 +63,7 @@ def main():
                 config,
                 mean_mse,
                 best_mse,
-                0 if bad_runs == 0 else bad_runs / (bad_runs + 3),
+                0 if bad_runs == 0 else bad_runs / (bad_runs + i + 1),
             )
         )
 
