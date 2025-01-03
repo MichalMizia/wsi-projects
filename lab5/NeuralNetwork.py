@@ -70,20 +70,22 @@ class NeuralNetwork:
     def _mse_derivative(self, y, output):
         return 2 * (output - y) / y.size
 
-    def _output_activation(self, x):
-        return 9 * self._sigmoid(x)
-
     # forward_prop with relu activation
     def forward_prop(self, X):
         self.hidden_layers_inputs = [X]
-        for i in range(len(self.weights)):
+        for i in range(len(self.weights) - 1):
             layer_input = (
                 np.dot(self.hidden_layers_inputs[-1], self.weights[i]) + self.biases[i]
             )
             layer_output = self._activ_func(layer_input)
             self.hidden_layers_inputs.append(layer_output)
 
-        return self._output_activation(self.hidden_layers_inputs[-1])
+        self.final_layer_output = (
+            np.dot(self.hidden_layers_inputs[-1], self.weights[-1]) + self.biases[-1]
+        )
+        self.hidden_layers_inputs.append(self.final_layer_output)
+
+        return self.final_layer_output
 
     def back_prop(self, X, y, output):
 
