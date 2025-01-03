@@ -67,7 +67,7 @@ class NeuralNetwork:
     def _mse_derivative(self, y, output):
         return 2 * (output - y) / y.size
 
-    # forward_prop with sigmoid activation
+    # forward_prop with relu activation
     def forward_prop(self, X):
         self.hidden_layers_inputs = [X]
         for i in range(len(self.weights) - 1):
