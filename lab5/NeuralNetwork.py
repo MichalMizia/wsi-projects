@@ -83,7 +83,8 @@ class NeuralNetwork:
         self.final_layer_output = (
             np.dot(self.hidden_layers_inputs[-1], self.weights[-1]) + self.biases[-1]
         )
-        return self._activ_func(self.final_layer_output)
+        # return self._activ_func(self.final_layer_output)
+        return self.final_layer_output
 
     def back_prop(self, X, y, output):
 
