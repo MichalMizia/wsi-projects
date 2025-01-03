@@ -19,7 +19,7 @@ def main():
     y = y.fillna(y.mean())
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=1
+        X, y, test_size=0.25, random_state=1
     )
 
     scaler = MinMaxScaler()
@@ -63,7 +63,7 @@ def main():
                 config,
                 mean_mse,
                 best_mse,
-                0 if bad_runs == 0 else bad_runs / (bad_runs + 3),
+                0 if bad_runs == 0 else bad_runs / (bad_runs + i + 1),
             )
         )
 
