@@ -1,3 +1,4 @@
 {
-  "data_file": "data/US_Crime_DataSet.csv"
+  "data_file": "data/US_Crime_Data.csv",
+  "model_file": "bn_model.pkl"
 }
