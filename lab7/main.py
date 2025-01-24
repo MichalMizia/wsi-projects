@@ -19,9 +19,6 @@ def main(config):
 
     df = df.head(df.shape[0] // 3)
 
-    # numerical_columns = ["Perpetrator Age", "Victim Age"]
-    # df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric)
-
     # bins = list(range(0, 101, 10))  # discretize age into bins of 10
     # labels = [f"{i}-{i+9}" for i in range(0, 100, 10)]
     # df["Perpetrator Age"] = pd.cut(
