@@ -10,7 +10,7 @@ pip install -r requirements.txt
 python ./board.py
 ```
 
-<video controls src="demo.mp4" title="Title"></video>
+https://github.com/user-attachments/assets/aa9c36cc-b0cc-45b9-88f4-36540793bd96
 
 ## The math
 
