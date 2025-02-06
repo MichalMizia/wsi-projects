@@ -27,7 +27,7 @@ def main():
 
     nn = NeuralNetwork(
         input_size=X_train.shape[1],
-        hidden_layers_size=[10, 6, 4],
+        hidden_layers_size=[16, 16],
         output_size=1,
         lr=0.1,
         # weights_init="HE"
