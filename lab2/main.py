@@ -8,6 +8,7 @@ from solution_utils import (
 )
 from visualizer import visualize
 from graph_results import graph_results
+
 from ga_roulette import GeneticSolver
 
 # from ga_tournament import GeneticSolver
@@ -65,8 +66,10 @@ def main():
 
     # graph_results(data)
     # visualize(decode_solution(data, good_sol))
-    solver = GeneticSolver(data, pop_size=400)
+    solver = GeneticSolver(data, pop_size=200)
     sol = solver.run(max_iter=200)
+
+    print(sol, decode_solution(data, sol))
 
     if args.visualize:
         visualize(decode_solution(data, sol))

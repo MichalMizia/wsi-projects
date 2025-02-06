@@ -1,0 +1,17 @@
+{
+  "x": {
+    "type": "human",
+    "pruning_depth": 5
+  },
+  "o": {
+    "type": "minimax",
+    "pruning_depth": 5
+  },
+  "random": {
+    "type": "random"
+  },
+  "minimax": { "type": "minimax", "pruning_depth": 5 },
+  "minimax_weak": { "type": "minimax", "pruning_depth": 3 },
+  "gui": false,
+  "3D": false
+}
