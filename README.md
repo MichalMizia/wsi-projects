@@ -16,3 +16,7 @@ This is a repository for projects that I created while attending a artificiall i
 
 8. MLP using pure maths for mnist dataset, pygame ui to draw digits and classify them
 9. Simple SVM
+
+
+https://github.com/user-attachments/assets/007f7f60-b25f-4312-9e44-df1d1652dd73
+
